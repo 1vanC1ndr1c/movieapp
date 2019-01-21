@@ -11,7 +11,7 @@ import java.util.Set;
 @Service
 @Primary
 public class PersonMapService extends AbstractMapService<Person, Long> implements PersonService {
-    
+
     @Override
     public Set<Person> findAll() {
         return super.findAll();
