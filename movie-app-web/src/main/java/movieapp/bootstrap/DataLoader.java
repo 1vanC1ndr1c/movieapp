@@ -1,6 +1,8 @@
 package movieapp.bootstrap;
 
-import model.*;
+import movieapp.model.*;
+import movieapp.services.MovieService;
+import movieapp.services.PersonService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +13,23 @@ import java.util.List;
 public class DataLoader  implements CommandLineRunner {
 
 
+    private final MovieService movieService;
+    private final PersonService personService;
+
+    public DataLoader(MovieService movieService, PersonService personService) {
+        this.movieService = movieService;
+        this.personService = personService;
+    }
+
+
     @Override
     public void run(String... args) throws Exception{
 
-        loadData();
+        int count = movieService.findAll().size();
+
+        if (count == 0) {
+            loadData();
+        }
 
     }
 
@@ -47,11 +62,17 @@ public class DataLoader  implements CommandLineRunner {
         actor.add(brando);
         godfather.setStars(actor);
 
-        godfather.setId(2l);
-
         List<Category> categories = new ArrayList<>();
         categories.add(Category.Crime);
         godfather.setCategoryList(categories);
+
+        godfather.setId(2l);
+
+        movieService.save(godfather);
+
+        personService.save(frank);
+        personService.save(brando);
+        personService.save(puzo);
 
         System.out.println(godfather);
     }
