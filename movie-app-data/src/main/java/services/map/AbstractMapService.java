@@ -1,21 +1,11 @@
 package services.map;
 
+import model.BaseEntity;
+
 import java.util.*;
 
-public abstract class AbstractMapService <T, ID extends Long> {
+public abstract class AbstractMapService <T extends BaseEntity, ID extends Long> {
 
-    //TODO
-    //    Set<T> findAll();
-    //
-    //    T findById(ID id);
-    //
-    //    List<String> findByName(String name);
-    //
-    //    T save(T object);
-    //
-    //    void delete(T object);
-    //
-    //    void deleteById(ID id);
 
     protected Map<Long, T> map = new HashMap<>();
 
@@ -26,6 +16,8 @@ public abstract class AbstractMapService <T, ID extends Long> {
     T findById(ID id) {
         return map.get(id);
     }
+
+
 
     T save(T object) {
         if (object != null) {
