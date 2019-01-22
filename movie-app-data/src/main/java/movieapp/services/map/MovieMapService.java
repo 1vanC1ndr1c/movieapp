@@ -2,6 +2,7 @@ package movieapp.services.map;
 
 
 import movieapp.model.Movie;
+import movieapp.services.PersonService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import movieapp.services.MovieService;
@@ -11,6 +12,13 @@ import java.util.Set;
 @Service
 @Primary
 public class MovieMapService extends AbstractMapService<Movie, Long> implements MovieService {
+
+    private final PersonService personService;
+
+    public MovieMapService(PersonService personService) {
+        this.personService = personService;
+    }
+
 
     @Override
     public Set<Movie> findAll() {

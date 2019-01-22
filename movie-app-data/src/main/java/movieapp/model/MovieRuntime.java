@@ -1,22 +1,17 @@
 package movieapp.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class MovieRuntime {
 
     private Integer hours = 0;
     private Integer minutes = 0;
-
-
-    public MovieRuntime(Integer hours, Integer minutes) {
-        this.hours = hours;
-        this.minutes = minutes;
-    }
 
     public Integer toMinutes() {
         return this.hours * 60 + this.minutes;

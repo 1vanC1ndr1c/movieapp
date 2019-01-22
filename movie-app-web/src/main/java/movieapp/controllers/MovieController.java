@@ -27,5 +27,16 @@ public class MovieController {
 
     }
 
+    @GetMapping("/{id}/show")
+    //good habit to do, only expecting get methods
+    //get mapping ~ request mapping
+    public String showById(@PathVariable String id, Model model) {
+
+        model.addAttribute("movie", movieService.findById(new Long(id)));
+
+        return "movie/show";
+    }
+
+
 
 }

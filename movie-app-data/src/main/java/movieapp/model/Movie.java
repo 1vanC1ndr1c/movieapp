@@ -1,5 +1,6 @@
 package movieapp.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,8 +34,8 @@ public class Movie extends BaseEntity {
 
     @JoinColumn(name = "release_date")
     @OneToOne(cascade = CascadeType.ALL, targetEntity = Movie.class)
-    @ElementCollection(targetClass = MovieReleaseDate.class)
-    private MovieReleaseDate releaseDate;
+    @ElementCollection(targetClass = CustomDate.class)
+    private CustomDate releaseDate;
 
     @Column(name = "Directors")
     @OneToMany(cascade = CascadeType.ALL)
@@ -49,7 +50,8 @@ public class Movie extends BaseEntity {
     private List<Person> stars = new ArrayList<>();
 
 
-    public Movie(Long id, String name, MovieRuntime movieRuntime, List<Category> categoryList, MovieReleaseDate releaseDate, List<Person> directors, List<Person> writers, List<Person> stars) {
+    @Builder
+    public Movie(Long id, String name, MovieRuntime movieRuntime, List<Category> categoryList, CustomDate releaseDate, List<Person> directors, List<Person> writers, List<Person> stars) {
         super(id);
         this.name = name;
         this.movieRuntime = movieRuntime;

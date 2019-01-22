@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <title>List of Movies</title>
 </head>
+
+<!--/*@thymesVar id="movie" type="movieapp.model.Movie"*/-->
 <body>
 <h1>Welcome to the List of Movies</h1>
+
+
+<p>
+    <div th:each="movie : *{movies}">
+        <td>
+            <a href="#" th:href="@{'/movie/' + ${movie.id} + '/show'}" th:text="${movie.name }">
+                Default Movie
+            </a>
+        </td>
+        <br/>
+    </div>
+
+</p>
+
+
+
+
 </body>
 </html>

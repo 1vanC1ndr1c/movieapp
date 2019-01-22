@@ -1,13 +1,9 @@
 package movieapp.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.Arrays;
 
 @NoArgsConstructor
 @Getter
@@ -21,12 +17,15 @@ public class Person extends BaseEntity {
 
     @JoinColumn(name = "roles")
     @OneToOne(cascade = CascadeType.ALL, targetEntity = Person.class)
-    private List<String> roles = new ArrayList<>();
+    private String[] roles;
 
     @Column(name = "bio")
     private String bio;
 
-    private Date born = new Date();
+    @JoinColumn(name = "birth_date")
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Person.class)
+    @ElementCollection(targetClass = CustomDate.class)
+    private CustomDate birthDate = new CustomDate();
 
     @Column(name = "birthPlace")
     private String birthPlace;
@@ -34,13 +33,26 @@ public class Person extends BaseEntity {
     @Column(name = "filmography")
     private String filmography;
 
-    public Person(Long id, String name, List<String> roles, String bio, Date born, String birthPlace, String filmography) {
+    @Builder//can't use allargs because of super()
+    public Person(Long id, String name, String[] roles, String bio, CustomDate birthDate, String birthPlace, String filmography) {
         super(id);
         this.name = name;
         this.roles = roles;
         this.bio = bio;
-        this.born = born;
+        this.birthDate = birthDate;
         this.birthPlace = birthPlace;
         this.filmography = filmography;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' + "\n" +
+                ", roles=" + Arrays.toString(roles) + "\n" +
+                ", bio='" + bio + '\'' + "\n" +
+                ", birthDate=" + birthDate + "\n" +
+                ", birthPlace='" + birthPlace + '\'' + "\n" +
+                ", filmography='" + filmography + '\'' + "\n" +
+                '}';
     }
 }

@@ -10,7 +10,8 @@ public class MovieappApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MovieappApplication.class, args);
-        System.out.println("Hello from SpringBootApp");
+
+        System.out.println("Everything is under controll!!!");
     }
 }
 

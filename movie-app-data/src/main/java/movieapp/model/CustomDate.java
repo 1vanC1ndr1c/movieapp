@@ -1,30 +1,28 @@
 package movieapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 
-public class MovieReleaseDate {
+public class CustomDate {
 
     private Integer year = -1;
     private Integer month = -1;
     private String monthString = "not set";
     private Integer day = -1;
 
-    public MovieReleaseDate(Integer year, Integer month, Integer day) {
+    public CustomDate(Integer year, Integer month, Integer day) {
         this.year = year;
         this.month = month;
         this.day = day;
         setMonthNameAndNumber();
     }
 
-    public MovieReleaseDate(Integer year, String monthString, Integer day) {
+    public CustomDate(Integer year, String monthString, Integer day) {
         this.year = year;
         this.monthString = monthString;
         this.day = day;
@@ -32,7 +30,7 @@ public class MovieReleaseDate {
 
     @Override
     public String toString() {
-        return "MovieReleaseDate{"
+        return "CustomDate{"
                 + year + "  "
                 + monthString + "  "
                 + day +

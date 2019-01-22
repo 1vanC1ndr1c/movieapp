@@ -1,6 +1,7 @@
 package movieapp.services.map;
 
 import movieapp.model.Person;
+import movieapp.services.MovieService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import movieapp.services.PersonService;
