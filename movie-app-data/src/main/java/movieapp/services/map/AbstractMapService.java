@@ -4,20 +4,17 @@ import movieapp.model.BaseEntity;
 
 import java.util.*;
 
-public abstract class AbstractMapService <T extends BaseEntity, ID extends Long> {
-
-
+public abstract class AbstractMapService<T extends BaseEntity, ID extends Long> {
+    
     protected Map<Long, T> map = new HashMap<>();
 
-    Set<T> findAll(){
+    Set<T> findAll() {
         return new HashSet<>(map.values());
     }
 
     T findById(ID id) {
         return map.get(id);
     }
-
-
 
     T save(T object) {
         if (object != null) {
@@ -43,7 +40,7 @@ public abstract class AbstractMapService <T extends BaseEntity, ID extends Long>
         Long nextId = null;
         try {
             nextId = Collections.max(map.keySet()) + 1;
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             nextId = 1L;
         }
         return nextId;

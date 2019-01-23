@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8"/>
-    <title>Show Movie</title>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
-
-    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <title th:text="${(movie.name) }" >Default Movie Name</title>
 </head>
+
 <!--/*@thymesVar id="movie" type="movieapp.model.Movie"*/-->
+<header>
+    <h1><img class="center" src="../static/resources/images/logo.png" th:src="@{/resources/images/logo.png}"/></h1>
+    <style>
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 20%;
+        }
+    </style>
+</header>
 
 <body>
-<div class="row">
-    <div class="col-md-3">
-        <h5>Name:</h5>
+    <div align="left">
+        <b>Name:</b>
+        <p th:text="${(movie.name) }">Default Movie Name</p>
+        <b>Description:</b>
+        <p th:text="${movie.description}">Default Movie Description</p>
+        <b>
+            <span th:if="${movie.directors.size() ==  1}">Director:</span>
+            <span th:unless="${movie.directors.size() ==  1}">Directors:</span>
+        </b>
+        <p th:text="${#strings.replace((#strings.replace(movie.getNames('directors'),']','')),'[','')}">Default Movie Directors</p>
+        <b>
+            <span th:if="${movie.writers.size() ==  1}">Writer:</span>
+            <span th:unless="${movie.writers.size() ==  1}">Writers:</span>
+        </b>
+        <p th:text="${#strings.replace((#strings.replace(movie.getNames('writers'),']','')),'[','')}">Default Movie Writers</p>
+        <b>
+            <span th:if="${movie.stars.size() ==  1}">Star:</span>
+            <span th:unless="${movie.stars.size() ==  1}">Stars:</span>
+        </b>
+        <p th:text="${#strings.replace((#strings.replace(movie.getNames('stars'),']','')),'[','')}">Default Movie Stars</p>
     </div>
-    <div class="col-md-3">
-        <p th:text="${(movie.name) }">Default Movie</p>
-    </div>
-    <div class="col-md-3">
-        <h5>Movie ID:</h5>
-    </div>
-    <div class="col-md-3">
-        <p th:text="${movie.id}">Default ID</p>
-    </div>
-</div>
-
 </body>

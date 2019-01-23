@@ -37,6 +37,9 @@ public class Movie extends BaseEntity {
     @ElementCollection(targetClass = CustomDate.class)
     private CustomDate releaseDate;
 
+    @Column(name = "movie_description")
+    private String description;
+
     @Column(name = "Directors")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Person> directors = new ArrayList<>();
@@ -51,12 +54,13 @@ public class Movie extends BaseEntity {
 
 
     @Builder
-    public Movie(Long id, String name, MovieRuntime movieRuntime, List<Category> categoryList, CustomDate releaseDate, List<Person> directors, List<Person> writers, List<Person> stars) {
+    public Movie(Long id, String name, MovieRuntime movieRuntime, List<Category> categoryList, CustomDate releaseDate, List<Person> directors, List<Person> writers, List<Person> stars, String description) {
         super(id);
         this.name = name;
         this.movieRuntime = movieRuntime;
         this.categoryList = categoryList;
         this.releaseDate = releaseDate;
+        this.description = description;
         this.directors = directors;
         this.writers = writers;
         this.stars = stars;
@@ -81,6 +85,7 @@ public class Movie extends BaseEntity {
         return "Movie{" + "\n" +
                 "id=" + super.getId() + "\n" +
                 ", name='" + name + '\'' + "\n" +
+                ", description='" + description + '\'' + "\n" +
                 ", movieRuntime=" + movieRuntime + "\n" +
                 ", categoryList=" + categoryList + "\n" +
                 ", releaseDate=" + releaseDate + "\n" +
@@ -88,5 +93,27 @@ public class Movie extends BaseEntity {
                 ", writers=" + writerNames + "\n" +
                 ", stars=" + starsNames + "\n" +
                 '}';
+    }
+
+    public List<String> getNames(String role) {
+        List<String> names = new ArrayList<>();
+
+        switch (role.toLowerCase()) {
+            case "directors":
+                for (Person director : directors)
+                    names.add(director.getName());
+                break;
+            case "writers":
+                for (Person writer : writers)
+                    names.add(writer.getName());
+                break;
+            case "stars":
+                for (Person star : stars)
+                    names.add(star.getName());
+                break;
+            default:
+                throw new IllegalArgumentException("There is no such role");
+        }
+        return names;
     }
 }
