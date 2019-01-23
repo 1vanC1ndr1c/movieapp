@@ -12,7 +12,6 @@ import java.util.List;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-
     private final MovieService movieService;
     private final PersonService personService;
 
@@ -20,7 +19,6 @@ public class DataLoader implements CommandLineRunner {
         this.movieService = movieService;
         this.personService = personService;
     }
-
 
     @Override
     public void run(String... args) throws Exception {

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${(person.name) }" >Default Person Name</title>
+</head>
+
+<!--/*@thymesVar id="person" type="movieapp.model.Person"*/-->
+<header>
+    <h1><img class="center" src="../static/resources/images/logo.png" th:src="@{/resources/images/logo.png}"/></h1>
+    <style>
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 20%;
+        }
+    </style>
+</header>
+
+<body>
+<div align="left">
+    <b>Name:</b>
+    <p th:text="${(person.name) }">Default Movie Name</p>
+    <b>Roles:</b>
+    <p><tr th:each="role : ${person.roles}"><label th:text="${role}+' '"> Default Person roles</label></tr></p>
+    <b>Biography:</b>
+    <p th:text="${person.bio}">Default Person Bio</p>
+    <b>Birth Date:</b>
+    <p th:text="${#strings.replace((#strings.replace(person.birthDate,'CustomDate{','')),'}','')}">Default BirthDate</p>
+    <b>Birth Place:</b>
+    <p th:text="${person.birthPlace}">Default Person BirthPlace</p>
+    <b>Filmography:</b>
+    <p th:text="${person.filmography}">Default Person Filmography</p>
+</div>
+</body>
