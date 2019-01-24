@@ -29,16 +29,16 @@
             <span th:if="${movie.directors.size() ==  1}">Director:</span>
             <span th:unless="${movie.directors.size() ==  1}">Directors:</span>
         </b>
-        <p th:text="${#strings.replace((#strings.replace(movie.getNames('directors'),']','')),'[','')}">Default Movie Directors</p>
+        <p th:text="${#strings.replace((#strings.replace(movie.getPeopleNames('directors'),']','')),'[','')}">Default Movie Directors</p>
         <b>
             <span th:if="${movie.writers.size() ==  1}">Writer:</span>
             <span th:unless="${movie.writers.size() ==  1}">Writers:</span>
         </b>
-        <p th:text="${#strings.replace((#strings.replace(movie.getNames('writers'),']','')),'[','')}">Default Movie Writers</p>
+        <p th:text="${#strings.replace((#strings.replace(movie.getPeopleNames('writers'),']','')),'[','')}">Default Movie Writers</p>
         <b>
             <span th:if="${movie.stars.size() ==  1}">Star:</span>
             <span th:unless="${movie.stars.size() ==  1}">Stars:</span>
         </b>
-        <p th:text="${#strings.replace((#strings.replace(movie.getNames('stars'),']','')),'[','')}">Default Movie Stars</p>
+        <p th:text="${#strings.replace((#strings.replace(movie.getPeopleNames('stars'),']','')),'[','')}">Default Movie Stars</p>
     </div>
 </body>

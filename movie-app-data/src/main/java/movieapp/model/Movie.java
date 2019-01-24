@@ -43,9 +43,6 @@ public class Movie extends BaseEntity {
 
     @Column(name = "Directors")
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "movie_directors",
-        joinColumns = @JoinColumn(name = "movie_id"),
-        inverseJoinColumns = @JoinColumn(name = "directors_id"))
     private List<Person> directors = new ArrayList<>();
 
     @Column(name = "Writers")
@@ -99,7 +96,7 @@ public class Movie extends BaseEntity {
                 '}';
     }
 
-    public List<String> getNames(String role) {
+    public List<String> getPeopleNames(String role) {
         List<String> names = new ArrayList<>();
 
         switch (role.toLowerCase()) {

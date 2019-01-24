@@ -4,12 +4,14 @@ import movieapp.model.*;
 import movieapp.services.MovieService;
 import movieapp.services.PersonService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Profile("dataloader")
 public class DataLoader implements CommandLineRunner {
 
     private final MovieService movieService;
@@ -42,7 +44,6 @@ public class DataLoader implements CommandLineRunner {
                 " had been an actress.");
         frank.setBirthPlace(" Detroit, Michigan, USA");
         frank.setBirthDate(new CustomDate(1939, "April", 7));
-        frank.setFilmography("Apocalypse Now, Godfather, Dracula");
         frank.setRoles(new String[]{"Producer", "Director", "Writer"});
 
         Person brando = new Person();
@@ -55,7 +56,6 @@ public class DataLoader implements CommandLineRunner {
         brando.setBirthPlace("Omaha, Nebraska, USA");
         brando.setBirthDate(new CustomDate(1947, 4, 3));
         brando.setRoles(new String[]{"Actor", "Director", "Soundtrack"});
-        brando.setFilmography("Apocalypse Now, Godfather, On the WaterFront");
 
         Person puzo = new Person();
         puzo.setName("Mario Puzo");
@@ -67,7 +67,6 @@ public class DataLoader implements CommandLineRunner {
         puzo.setBirthPlace("Manhattan, New York City, New York, USA");
         puzo.setBirthDate(new CustomDate(1920, "October", 15));
         puzo.setRoles(new String[]{"Writer"});
-        puzo.setFilmography("Godfather, Godfather Part II, Godfather Part III");
 
         Person pacino = new Person();
         pacino.setName("Al Pacino");
@@ -80,17 +79,7 @@ public class DataLoader implements CommandLineRunner {
         pacino.setBirthPlace("Manhattan, New York City, New York, USA");
         pacino.setBirthDate(new CustomDate(1940, 4, 25));
         pacino.setRoles(new String[]{"Actor", "Producer", "Soundtrack"});
-        pacino.setFilmography("Godfather, Godfather Part II, Godfather Part III");
 
-
-        personService.save(frank);
-        personService.save(brando);
-        personService.save(puzo);
-        personService.save(pacino);
-        System.out.println(frank);
-        System.out.println(brando);
-        System.out.println(puzo);
-        System.out.println(pacino);
 
         //1st movie
         Movie godfather = new Movie();
@@ -111,8 +100,6 @@ public class DataLoader implements CommandLineRunner {
         List<Category> categories = new ArrayList<>();
         categories.add(Category.Crime);
         godfather.setCategoryList(categories);
-        movieService.save(godfather);
-        System.out.println(godfather);
 
 
         //2nd movie
@@ -135,8 +122,31 @@ public class DataLoader implements CommandLineRunner {
         List<Category> categoriesII = new ArrayList<>();
         categoriesII.add(Category.Crime);
         godfatherII.setCategoryList(categories);
+
+        List<Movie> filmography = new ArrayList<>();
+        filmography.add(godfather);
+        filmography.add(godfatherII);
+
+        frank.setFilmography(filmography);
+        brando.setFilmography(filmography);
+        puzo.setFilmography(filmography);
+        pacino.setFilmography(filmography);
+
+        personService.save(frank);
+        personService.save(brando);
+        personService.save(puzo);
+        personService.save(pacino);
+        System.out.println(frank);
+        System.out.println(brando);
+        System.out.println(puzo);
+        System.out.println(pacino);
+        movieService.save(godfather);
+        System.out.println(godfather);
         movieService.save(godfatherII);
         System.out.println(godfatherII);
+
+
+
 
     }
 }

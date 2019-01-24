@@ -3,7 +3,9 @@ package movieapp.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -31,10 +33,11 @@ public class Person extends BaseEntity {
     private String birthPlace;
 
     @Column(name = "filmography")
-    private String filmography;
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Person.class)
+    private List<Movie> filmography = new ArrayList<>();
 
     @Builder//can't use allargs because of super()
-    public Person(Long id, String name, String[] roles, String bio, CustomDate birthDate, String birthPlace, String filmography) {
+    public Person(Long id, String name, String[] roles, String bio, CustomDate birthDate, String birthPlace, List<Movie> filmography) {
         super(id);
         this.name = name;
         this.roles = roles;
@@ -52,7 +55,17 @@ public class Person extends BaseEntity {
                 ", bio='" + bio + '\'' + "\n" +
                 ", birthDate=" + birthDate + "\n" +
                 ", birthPlace='" + birthPlace + '\'' + "\n" +
-                ", filmography='" + filmography + '\'' + "\n" +
+                ", filmography='" + getMovieNames() + '\'' + "\n" +
                 '}';
+    }
+
+    public String getMovieNames() {
+        StringBuilder filmographyToString = new StringBuilder();
+
+        for (Movie movie : filmography) {
+            filmographyToString.append(movie.getName());
+            filmographyToString.append(" ");
+        }
+        return filmographyToString.toString();
     }
 }
