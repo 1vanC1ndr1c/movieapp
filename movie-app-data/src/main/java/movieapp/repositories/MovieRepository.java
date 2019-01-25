@@ -1,9 +1,10 @@
 package movieapp.repositories;
 
 import movieapp.model.Movie;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MovieRepository extends CrudRepository<Movie, Long> {
+
+public interface MovieRepository extends JpaRepository<Movie, Long> {
 
 
 }

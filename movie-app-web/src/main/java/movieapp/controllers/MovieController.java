@@ -1,27 +1,28 @@
 package movieapp.controllers;
 
 
+import movieapp.repositories.MovieRepository;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import movieapp.services.MovieService;
+
 
 
 @RequestMapping("/movie")//this one combines with the one below
 @Controller
 public class MovieController {
 
-    private final MovieService movieService;
+    private final MovieRepository movieRepository;
 
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
+    public MovieController(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
     @RequestMapping({"/", "", "Index", "Index.html", "index", "index.html"})
     public String listMovies(Model model) {
 
-        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("movies", movieRepository.findAll());
 
         return "movie/index";
 
@@ -32,7 +33,7 @@ public class MovieController {
     //get mapping ~ request mapping
     public String showById(@PathVariable String id, Model model) {
 
-        model.addAttribute("movie", movieService.findById(new Long(id)));
+        model.addAttribute("movie", movieRepository.findById(new Long(id)));
 
         return "movie/show";
     }

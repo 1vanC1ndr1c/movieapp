@@ -3,69 +3,55 @@ package movieapp.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 
 @Entity
+@Table(name = "person")
 public class Person extends BaseEntity {
 
     @Column(name = "name")
     private String name;
 
-    @JoinColumn(name = "roles")
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = Person.class)
-    private String[] roles;
-
-    @Column(name = "bio")
+    @Column(name = "bio", length = 20000)
     private String bio;
-
-    @JoinColumn(name = "birth_date")
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = Person.class)
-    @ElementCollection(targetClass = CustomDate.class)
-    private CustomDate birthDate = new CustomDate();
 
     @Column(name = "birthPlace")
     private String birthPlace;
 
-    @Column(name = "filmography")
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Person.class)
-    private List<Movie> filmography = new ArrayList<>();
+    @Column(name = "birthDate", length = 20000)
+    private CustomDate birthDate = new CustomDate();
 
-    @Builder//can't use allargs because of super()
-    public Person(Long id, String name, String[] roles, String bio, CustomDate birthDate, String birthPlace, List<Movie> filmography) {
-        super(id);
-        this.name = name;
-        this.roles = roles;
-        this.bio = bio;
-        this.birthDate = birthDate;
-        this.birthPlace = birthPlace;
-        this.filmography = filmography;
-    }
+    @Column(name = "roles", length = 20000)
+    @ElementCollection(targetClass = Role.class)
+    @Enumerated(value = EnumType.STRING)
+    private List<Role> roles = new ArrayList<>();
+
+    //  @ElementCollection(targetClass = Movie.class)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "filmography_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private List<Movie> filmography = new ArrayList<>();
 
     @Override
     public String toString() {
+        StringBuilder movies = new StringBuilder();
+        for (int i = 0; i < filmography.size(); i++) {
+            if (i == filmography.size() - 1) movies.append(filmography.get(i).getMovieName() + ".");
+            else movies.append(filmography.get(i).getMovieName() + ", ");
+        }
+
         return "Person{" +
                 "name='" + name + '\'' + "\n" +
-                ", roles=" + Arrays.toString(roles) + "\n" +
+                ", roles=" + roles.toString() + "\n" +
                 ", bio='" + bio + '\'' + "\n" +
-                ", birthDate=" + birthDate + "\n" +
+                ", releaseDate=" + birthDate + "\n" +
                 ", birthPlace='" + birthPlace + '\'' + "\n" +
-                ", filmography='" + getMovieNames() + '\'' + "\n" +
+                ", filmography='" + movies.toString() + '\'' + "\n" +
                 '}';
-    }
-
-    public String getMovieNames() {
-        StringBuilder filmographyToString = new StringBuilder();
-
-        for (Movie movie : filmography) {
-            filmographyToString.append(movie.getName());
-            filmographyToString.append(" ");
-        }
-        return filmographyToString.toString();
     }
 }

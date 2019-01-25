@@ -7,8 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-public class MovieRuntime {
+public class MovieRuntime extends BaseEntity {
 
     private Integer hours = 0;
     private Integer minutes = 0;

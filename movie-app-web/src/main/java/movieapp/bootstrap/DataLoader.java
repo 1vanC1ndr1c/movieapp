@@ -1,31 +1,30 @@
 package movieapp.bootstrap;
 
 import movieapp.model.*;
-import movieapp.services.MovieService;
-import movieapp.services.PersonService;
+import movieapp.repositories.MovieRepository;
+import movieapp.repositories.PersonRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Component
-@Profile("dataloader")
+//@Profile("dataloader")
 public class DataLoader implements CommandLineRunner {
 
-    private final MovieService movieService;
-    private final PersonService personService;
+    private final MovieRepository movieRepository;
+    private final PersonRepository personRepository;
 
-    public DataLoader(MovieService movieService, PersonService personService) {
-        this.movieService = movieService;
-        this.personService = personService;
+    public DataLoader(MovieRepository movieRepository, PersonRepository personRepository) {
+        this.movieRepository = movieRepository;
+        this.personRepository = personRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-
-        int count = movieService.findAll().size();
+        int count = movieRepository.findAll().size();
 
         if (count == 0) {
             loadData();
@@ -37,25 +36,18 @@ public class DataLoader implements CommandLineRunner {
         //make some persons
         Person frank = new Person();
         frank.setName("Francis Ford Copolla");
-        frank.setBio("Francis Ford Coppola was birthDate in 1939 in Detroit, Michigan, " +
+        frank.setBio("Francis Ford Coppola was releaseDate in 1939 in Detroit, Michigan, " +
                 " but grew up in a New York suburb in a creative, " +
                 " supportive Italian-American family. His father, Carmine Coppola, " +
                 " was a composer and musician. His mother, Italia Coppola (née Pennino), " +
                 " had been an actress.");
         frank.setBirthPlace(" Detroit, Michigan, USA");
-        frank.setBirthDate(new CustomDate(1939, "April", 7));
-        frank.setRoles(new String[]{"Producer", "Director", "Writer"});
-
-        Person brando = new Person();
-        brando.setName("Marlon Brando");
-        brando.setBio("Marlon Brando is widely considered the greatest movie actor of all time," +
-                " rivaled only by the more theatrically oriented Laurence Olivier in terms of esteem." +
-                " Unlike Olivier, who preferred the stage to the screen, Brando concentrated his talents on " +
-                " movies after bidding the Broadway stage adieu in 1949," +
-                " a decision for which he was severely criticized.");
-        brando.setBirthPlace("Omaha, Nebraska, USA");
-        brando.setBirthDate(new CustomDate(1947, 4, 3));
-        brando.setRoles(new String[]{"Actor", "Director", "Soundtrack"});
+        frank.setBirthDate(new CustomDate(1939, 04, 07));
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.DIRECTOR);
+        roles.add(Role.PRODUCER);
+        roles.add(Role.WRITER);
+        frank.setRoles(roles);
 
         Person puzo = new Person();
         puzo.setName("Mario Puzo");
@@ -65,8 +57,26 @@ public class DataLoader implements CommandLineRunner {
                 " His best-known novel, \"The Godfather,\" was preceded by two critically" +
                 " acclaimed novels, \"The Dark Arena\" and \"The Fortunate Pilgrim.");
         puzo.setBirthPlace("Manhattan, New York City, New York, USA");
-        puzo.setBirthDate(new CustomDate(1920, "October", 15));
-        puzo.setRoles(new String[]{"Writer"});
+        puzo.setBirthDate(new CustomDate(1920, 10, 15));
+        List<Role> roles2 = new ArrayList<>();
+        roles2.add(Role.WRITER);
+        puzo.setRoles(roles2);
+
+
+        Person brando = new Person();
+        brando.setName("Marlon Brando");
+        brando.setBio("Marlon Brando is widely considered the greatest movie actor of all time," +
+                " rivaled only by the more theatrically oriented Laurence Olivier in terms of esteem." +
+                " Unlike Olivier, who preferred the stage to the screen, Brando concentrated his talents on " +
+                " movies after bidding the Broadway stage adieu in 1949," +
+                " a decision for which he was severely criticized.");
+        brando.setBirthPlace("Omaha, Nebraska, USA");
+        brando.setBirthDate(new CustomDate(1947, 04, 03));
+        List<Role> roles3 = new ArrayList<>();
+        roles3.add(Role.DIRECTOR);
+        roles3.add(Role.ACTOR);
+        roles3.add(Role.SOUNDTRACK);
+        brando.setRoles(roles3);
 
         Person pacino = new Person();
         pacino.setName("Al Pacino");
@@ -78,75 +88,74 @@ public class DataLoader implements CommandLineRunner {
                 " New York City, to an Italian-American family.");
         pacino.setBirthPlace("Manhattan, New York City, New York, USA");
         pacino.setBirthDate(new CustomDate(1940, 4, 25));
-        pacino.setRoles(new String[]{"Actor", "Producer", "Soundtrack"});
+        List<Role> roles4 = new ArrayList<>();
+        roles4.add(Role.PRODUCER);
+        roles4.add(Role.ACTOR);
+        roles4.add(Role.SOUNDTRACK);
+        pacino.setRoles(roles4);
+
+        personRepository.save(puzo);
+        personRepository.save(frank);
+        personRepository.save(brando);
+        personRepository.save(pacino);
 
 
+        List<Person> directors = new ArrayList<>();
+        List<Person> writers = new ArrayList<>();
+        List<Person> actors = new ArrayList<>();
         //1st movie
         Movie godfather = new Movie();
-        godfather.setName("Godfather");
-        godfather.setDescription("The aging patriarch of an organized crime dynasty transfers control " +
+        godfather.setMovieName("Godfather");
+        godfather.setMovieDescription("The aging patriarch of an organized crime dynasty transfers control " +
                 " of his clandestine empire to his reluctant son.");
         godfather.setMovieRuntime(new MovieRuntime(2, 55));
-        godfather.setReleaseDate(new CustomDate(1972, "March", 24));
-        List<Person> director = new ArrayList<>();
-        director.add(frank);
-        godfather.setDirectors(director);
-        List<Person> writer = new ArrayList<>();
-        writer.add(puzo);
-        godfather.setWriters(writer);
-        List<Person> actor = new ArrayList<>();
-        actor.add(brando);
-        godfather.setStars(actor);
-        List<Category> categories = new ArrayList<>();
-        categories.add(Category.Crime);
-        godfather.setCategoryList(categories);
-
-
+        godfather.setReleaseDate(new CustomDate(1972, 3, 24));
+        directors.add(frank);
+        godfather.setDirectors(directors);
+        writers.add(frank);
+        writers.add(puzo);
+        godfather.setWriters(writers);
+        actors.add(brando);
+        actors.add(pacino);
+        godfather.setStars(actors);
         //2nd movie
         Movie godfatherII = new Movie();
-        godfatherII.setName("GodfatherII");
-        godfatherII.setDescription("The early life and career of Vito Corleone in 1920s New York City is portrayed," +
+        godfatherII.setMovieName("GodfatherII");
+        godfatherII.setMovieDescription("The early life and career of Vito Corleone in 1920s New York City is portrayed," +
                 " while his son, Michael, expands and tightens his grip on the family crime syndicate");
         godfatherII.setMovieRuntime(new MovieRuntime(3, 22));
-        godfatherII.setReleaseDate(new CustomDate(1974, "December", 20));
-        List<Person> directorII = new ArrayList<>();
-        directorII.add(frank);
-        godfatherII.setDirectors(director);
-        List<Person> writerII = new ArrayList<>();
-        writerII.add(puzo);
-        godfatherII.setWriters(writer);
-        List<Person> actorII = new ArrayList<>();
-        actorII.add(brando);
-        actorII.add(pacino);
-        godfatherII.setStars(actorII);
-        List<Category> categoriesII = new ArrayList<>();
-        categoriesII.add(Category.Crime);
-        godfatherII.setCategoryList(categories);
+        godfatherII.setReleaseDate(new CustomDate(1974, 12, 20));
+        godfatherII.setDirectors(directors);
+        godfatherII.setWriters(writers);
+        List<Person> actors2 = new ArrayList<>();
+        actors2.add(brando);
+        godfatherII.setStars(actors2);
 
         List<Movie> filmography = new ArrayList<>();
         filmography.add(godfather);
         filmography.add(godfatherII);
-
         frank.setFilmography(filmography);
-        brando.setFilmography(filmography);
         puzo.setFilmography(filmography);
         pacino.setFilmography(filmography);
+        List<Movie> filmography2 = new ArrayList<>();
+        filmography2.add(godfather);
+        brando.setFilmography(filmography2);
 
-        personService.save(frank);
-        personService.save(brando);
-        personService.save(puzo);
-        personService.save(pacino);
+        movieRepository.save(godfatherII);
+        movieRepository.save(godfather);
+        personRepository.save(brando);
+        personRepository.save(frank);
+        personRepository.save(puzo);
+        personRepository.save(pacino);
+
+
         System.out.println(frank);
         System.out.println(brando);
         System.out.println(puzo);
         System.out.println(pacino);
-        movieService.save(godfather);
+
+
         System.out.println(godfather);
-        movieService.save(godfatherII);
         System.out.println(godfatherII);
-
-
-
-
     }
 }

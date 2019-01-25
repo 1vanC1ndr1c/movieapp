@@ -5,10 +5,9 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
-
-public class CustomDate {
+@AllArgsConstructor
+public class CustomDate extends BaseEntity {
 
     private Integer year = -1;
     private Integer month = -1;
