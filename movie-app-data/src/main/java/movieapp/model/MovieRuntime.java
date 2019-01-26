@@ -22,7 +22,7 @@ public class MovieRuntime extends BaseEntity {
 
     @Override
     public String toString() {
-        return "hours=" + hours +
-                ", minutes=" + minutes;
+        return hours + "h " +
+               + minutes + "min ";
     }
 }

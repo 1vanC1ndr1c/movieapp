@@ -101,7 +101,7 @@ public class DataLoader implements CommandLineRunner {
 
         //1st movie
         Movie godfather = new Movie();
-        godfather.setName("Godfather");
+        godfather.setName("The Godfather");
         godfather.setMovieDescription("The aging patriarch of an organized crime dynasty transfers control " +
                 " of his clandestine empire to his reluctant son.");
         godfather.setMovieRuntime(new MovieRuntime(2, 55));
@@ -117,7 +117,7 @@ public class DataLoader implements CommandLineRunner {
 
         //2nd movie
         Movie godfatherII = new Movie();
-        godfatherII.setName("GodfatherII");
+        godfatherII.setName("The Godfather: Part II");
         godfatherII.setMovieDescription("The early life and career of Vito Corleone in 1920s New York City is portrayed," +
                 " while his son, Michael, expands and tightens his grip on the family crime syndicate");
         godfatherII.setMovieRuntime(new MovieRuntime(3, 22));
@@ -156,7 +156,7 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println(godfather);
         System.out.println(godfatherII);
-     
+
         System.out.println(frank);
         System.out.println(brando);
         System.out.println(puzo);

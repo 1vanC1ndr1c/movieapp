@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${(person.name) }" >Default Person Name</title>
+    <title th:text="${(person.get().getName()) }" >Default Person Name</title>
 </head>
 
 <!--/*@thymesVar id="person" type="movieapp.model.Person"*/-->
@@ -19,19 +19,19 @@
     </style>
 </header>
 
-<body>
-<div align="left">
+<body style="background-color:black;", text="white">
+<div style="background-color:grey;" align="left">
     <b>Name:</b>
-    <p th:text="${(person.name) }">Default Movie Name</p>
+    <p th:text="${(person.get().getName())}">Default Movie Name</p>
     <b>Roles:</b>
-    <p><tr th:each="role : ${person.roles}"><label th:text="${role}+' '"> Default Person roles</label></tr></p>
+    <p><tr th:each="role : ${person.get().roles}"><label th:text="${role.toString()}+' '"> Default Person roles</label></tr></p>
     <b>Biography:</b>
-    <p th:text="${person.bio}">Default Person Bio</p>
+    <p th:text="${person.get().bio}">Default Person Bio</p>
     <b>Birth Date:</b>
-    <p th:text="${#strings.replace((#strings.replace(person.birthDate,'CustomDate{','')),'}','')}">Default BirthDate</p>
+    <p th:text="${#strings.replace((#strings.replace(person.get().birthDate,'CustomDate{','')),'}','')}">Default BirthDate</p>
     <b>Birth Place:</b>
-    <p th:text="${person.birthPlace}">Default Person BirthPlace</p>
+    <p th:text="${person.get().birthPlace}">Default Person BirthPlace</p>
     <b>Filmography:</b>
-    <p th:text="${person.getMovieNames()}">Default Person Filmography</p>
+    <span th:each="movie : *{filmography}"><td th:text="${movie.getName()+' '}">Default Movie</td></span> <br/></div>
 </div>
 </body>

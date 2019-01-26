@@ -30,7 +30,7 @@ public class Movie extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Category> categoryList = new ArrayList<>();
 
-    @Column(name = "peopleByRolesList", length = 20000)
+    @Column(name = "peopleByRolesList", length = 2000000)
     @ElementCollection(targetClass = EntityByRoles.class)
     private List<EntityByRoles> peopleByRolesList = new ArrayList<>();
 

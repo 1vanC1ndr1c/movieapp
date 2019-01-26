@@ -29,9 +29,9 @@ public class CustomDate extends BaseEntity {
 
     @Override
     public String toString() {
-        return year + "  "
+        return day + "  "
                 + monthString + "  "
-                + day;
+                +year;
     }
 
     private void setMonthNameAndNumber() {

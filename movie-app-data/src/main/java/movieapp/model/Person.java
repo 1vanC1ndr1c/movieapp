@@ -29,7 +29,7 @@ public class Person extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name = "moviesByRolesList", length = 20000)
+    @Column(name = "moviesByRolesList", length = 2000000)
     @ElementCollection(targetClass = EntityByRoles.class)
     private List<EntityByRoles> moviesByRolesList = new ArrayList<>();
 
