@@ -15,9 +15,6 @@ import java.util.*;
 @Table(name = "person")
 public class Person extends BaseEntity {
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "bio", length = 20000)
     private String bio;
 
@@ -32,26 +29,28 @@ public class Person extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    //  @ElementCollection(targetClass = Movie.class)
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "filmography_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private List<Movie> filmography = new ArrayList<>();
+    @Column(name = "moviesByRolesList", length = 20000)
+    @ElementCollection(targetClass = EntityByRoles.class)
+    private List<EntityByRoles> moviesByRolesList = new ArrayList<>();
 
     @Override
     public String toString() {
-        StringBuilder movies = new StringBuilder();
-        for (int i = 0; i < filmography.size(); i++) {
-            if (i == filmography.size() - 1) movies.append(filmography.get(i).getMovieName() + ".");
-            else movies.append(filmography.get(i).getMovieName() + ", ");
-        }
+        List<String> filmography = new ArrayList<>();
 
-        return "Person{" +
-                "name='" + name + '\'' + "\n" +
-                ", roles=" + roles.toString() + "\n" +
-                ", bio='" + bio + '\'' + "\n" +
-                ", releaseDate=" + birthDate + "\n" +
-                ", birthPlace='" + birthPlace + '\'' + "\n" +
-                ", filmography='" + movies.toString() + '\'' + "\n" +
-                '}';
+        for (EntityByRoles entityByRoles : moviesByRolesList) {
+            for (Object o : entityByRoles.getList()) {
+                if (o instanceof BaseEntity) {
+                    if (!filmography.contains(((BaseEntity) o).getName())) filmography.add(((BaseEntity) o).getName());
+                } else {
+                    throw new IllegalArgumentException("Not good");
+                }
+            }
+        }
+        return getName() + '\n' +
+                "bio='" + bio + '\n' +
+                ", birthPlace='" + birthPlace + '\n' +
+                ", birthDate=" + birthDate.toString() + '\n' +
+                ", roles=" + roles.toString() + '\n' +
+                ", filmography=" + filmography.toString();
     }
 }

@@ -1,5 +1,5 @@
 package movieapp.model;
 
 public enum Role {
-    DIRECTOR, WRITER, ACTOR, SOUNDTRACK,PRODUCER
+    DIRECTOR, WRITER, ACTOR, SOUNDTRACK, PRODUCER
 }

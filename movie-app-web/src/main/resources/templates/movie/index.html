@@ -27,7 +27,7 @@
 <p>
     <div th:each="movie : *{movies}">
         <td>
-            <a href="#" th:href="@{'/movie/' + ${movie.id} + '/show'}" th:text="${movie.name }">
+            <a href="#" th:href="@{'/movie/' + ${movie.id} + '/show'}" th:text="${movie.movieName}">
                 Default Movie
             </a>
         </td>

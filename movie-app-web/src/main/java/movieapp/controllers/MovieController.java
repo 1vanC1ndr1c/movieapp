@@ -2,6 +2,7 @@ package movieapp.controllers;
 
 
 import movieapp.repositories.MovieRepository;
+import movieapp.repositories.PersonRepository;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -15,13 +16,12 @@ public class MovieController {
 
     private final MovieRepository movieRepository;
 
-    public MovieController(MovieRepository movieRepository) {
+    public MovieController(MovieRepository movieRepository, PersonRepository personRepository) {
         this.movieRepository = movieRepository;
     }
 
     @RequestMapping({"/", "", "Index", "Index.html", "index", "index.html"})
     public String listMovies(Model model) {
-
         model.addAttribute("movies", movieRepository.findAll());
 
         return "movie/index";

@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,7 +63,6 @@ public class DataLoader implements CommandLineRunner {
         roles2.add(Role.WRITER);
         puzo.setRoles(roles2);
 
-
         Person brando = new Person();
         brando.setName("Marlon Brando");
         brando.setBio("Marlon Brando is widely considered the greatest movie actor of all time," +
@@ -99,63 +99,86 @@ public class DataLoader implements CommandLineRunner {
         personRepository.save(brando);
         personRepository.save(pacino);
 
-
-        List<Person> directors = new ArrayList<>();
-        List<Person> writers = new ArrayList<>();
-        List<Person> actors = new ArrayList<>();
         //1st movie
         Movie godfather = new Movie();
-        godfather.setMovieName("Godfather");
+        godfather.setName("Godfather");
         godfather.setMovieDescription("The aging patriarch of an organized crime dynasty transfers control " +
                 " of his clandestine empire to his reluctant son.");
         godfather.setMovieRuntime(new MovieRuntime(2, 55));
         godfather.setReleaseDate(new CustomDate(1972, 3, 24));
-        directors.add(frank);
-        godfather.setDirectors(directors);
-        writers.add(frank);
-        writers.add(puzo);
-        godfather.setWriters(writers);
-        actors.add(brando);
-        actors.add(pacino);
-        godfather.setStars(actors);
+        List<Category> categories = new ArrayList<>();
+        categories.add(Category.Crime);
+        godfather.setCategoryList(categories);
+        List<EntityByRoles> godfatherCast = new ArrayList<>();
+        setPeopleJobs(Role.DIRECTOR, godfatherCast, frank);
+        setPeopleJobs(Role.ACTOR, godfatherCast, brando, pacino);
+        setPeopleJobs(Role.WRITER, godfatherCast, puzo);
+        godfather.setPeopleByRolesList(godfatherCast);
+
         //2nd movie
         Movie godfatherII = new Movie();
-        godfatherII.setMovieName("GodfatherII");
+        godfatherII.setName("GodfatherII");
         godfatherII.setMovieDescription("The early life and career of Vito Corleone in 1920s New York City is portrayed," +
                 " while his son, Michael, expands and tightens his grip on the family crime syndicate");
         godfatherII.setMovieRuntime(new MovieRuntime(3, 22));
         godfatherII.setReleaseDate(new CustomDate(1974, 12, 20));
-        godfatherII.setDirectors(directors);
-        godfatherII.setWriters(writers);
-        List<Person> actors2 = new ArrayList<>();
-        actors2.add(brando);
-        godfatherII.setStars(actors2);
+        godfatherII.setCategoryList(categories);
+        List<EntityByRoles> godfatherIICast = new ArrayList<>();
+        setPeopleJobs(Role.DIRECTOR, godfatherIICast, frank);
+        setPeopleJobs(Role.ACTOR, godfatherIICast, pacino);
+        setPeopleJobs(Role.WRITER, godfatherIICast, puzo);
+        godfatherII.setPeopleByRolesList(godfatherIICast);
 
-        List<Movie> filmography = new ArrayList<>();
-        filmography.add(godfather);
-        filmography.add(godfatherII);
-        frank.setFilmography(filmography);
-        puzo.setFilmography(filmography);
-        pacino.setFilmography(filmography);
-        List<Movie> filmography2 = new ArrayList<>();
-        filmography2.add(godfather);
-        brando.setFilmography(filmography2);
+
+        List<EntityByRoles> frankFilmography = new ArrayList<>();
+        setPeopleFilmography(Role.DIRECTOR, frankFilmography, godfather, godfatherII);
+        setPeopleFilmography(Role.WRITER, frankFilmography, godfather, godfatherII);
+        frank.setMoviesByRolesList(frankFilmography);
+
+        List<EntityByRoles> puzoFilmography = new ArrayList<>();
+        setPeopleFilmography(Role.WRITER, puzoFilmography, godfather, godfatherII);
+        puzo.setMoviesByRolesList(puzoFilmography);
+
+        List<EntityByRoles> pacinoFilmography = new ArrayList<>();
+        setPeopleFilmography(Role.ACTOR, pacinoFilmography, godfather, godfatherII);
+        pacino.setMoviesByRolesList(pacinoFilmography);
+
+        List<EntityByRoles> brandoFilmography = new ArrayList<>();
+        setPeopleFilmography(Role.ACTOR, brandoFilmography, godfather);
+        brando.setMoviesByRolesList(brandoFilmography);
 
         movieRepository.save(godfatherII);
         movieRepository.save(godfather);
-        personRepository.save(brando);
         personRepository.save(frank);
         personRepository.save(puzo);
+        personRepository.save(brando);
         personRepository.save(pacino);
 
-
+        System.out.println(godfather);
+        System.out.println(godfatherII);
+     
         System.out.println(frank);
         System.out.println(brando);
         System.out.println(puzo);
         System.out.println(pacino);
 
+    }
 
-        System.out.println(godfather);
-        System.out.println(godfatherII);
+    public void setPeopleJobs(Role role, List<EntityByRoles> cast, Person... people) {
+        EntityByRoles<Person> movieJob = new EntityByRoles<>();
+        movieJob.setRole(role);
+        List<Person> movieJobList = new ArrayList<>();
+        movieJobList.addAll(Arrays.asList(people));
+        movieJob.setList(movieJobList);
+        cast.add(movieJob);
+    }
+
+    public void setPeopleFilmography(Role role, List<EntityByRoles> personFilmography, Movie... movies) {
+        EntityByRoles<Movie> personMovieByRole = new EntityByRoles<>();
+        personMovieByRole.setRole(role);
+        List<Movie> movieList = new ArrayList<>();
+        movieList.addAll(Arrays.asList(movies));
+        personMovieByRole.setList(movieList);
+        personFilmography.add(personMovieByRole);
     }
 }
