@@ -6,9 +6,7 @@ import movieapp.repositories.PersonRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 @Component
@@ -109,11 +107,11 @@ public class DataLoader implements CommandLineRunner {
         List<Category> categories = new ArrayList<>();
         categories.add(Category.Crime);
         godfather.setCategoryList(categories);
-        List<EntityByRoles> godfatherCast = new ArrayList<>();
+        Set<EntityByRoles> godfatherCast = new LinkedHashSet<>();
         setPeopleJobs(Role.DIRECTOR, godfatherCast, frank);
         setPeopleJobs(Role.ACTOR, godfatherCast, brando, pacino);
         setPeopleJobs(Role.WRITER, godfatherCast, puzo);
-        godfather.setPeopleByRolesList(godfatherCast);
+        godfather.setPeopleByRolesSet(godfatherCast);
 
         //2nd movie
         Movie godfatherII = new Movie();
@@ -123,37 +121,38 @@ public class DataLoader implements CommandLineRunner {
         godfatherII.setMovieRuntime(new MovieRuntime(3, 22));
         godfatherII.setReleaseDate(new CustomDate(1974, 12, 20));
         godfatherII.setCategoryList(categories);
-        List<EntityByRoles> godfatherIICast = new ArrayList<>();
+        Set<EntityByRoles> godfatherIICast = new LinkedHashSet<>();
         setPeopleJobs(Role.DIRECTOR, godfatherIICast, frank);
         setPeopleJobs(Role.ACTOR, godfatherIICast, pacino);
         setPeopleJobs(Role.WRITER, godfatherIICast, puzo);
-        godfatherII.setPeopleByRolesList(godfatherIICast);
-
-
-        List<EntityByRoles> frankFilmography = new ArrayList<>();
-        setPeopleFilmography(Role.DIRECTOR, frankFilmography, godfather, godfatherII);
-        setPeopleFilmography(Role.WRITER, frankFilmography, godfather, godfatherII);
-        frank.setMoviesByRolesList(frankFilmography);
-
-        List<EntityByRoles> puzoFilmography = new ArrayList<>();
-        setPeopleFilmography(Role.WRITER, puzoFilmography, godfather, godfatherII);
-        puzo.setMoviesByRolesList(puzoFilmography);
-
-        List<EntityByRoles> pacinoFilmography = new ArrayList<>();
-        setPeopleFilmography(Role.ACTOR, pacinoFilmography, godfather, godfatherII);
-        pacino.setMoviesByRolesList(pacinoFilmography);
-
-        List<EntityByRoles> brandoFilmography = new ArrayList<>();
-        setPeopleFilmography(Role.ACTOR, brandoFilmography, godfather);
-        brando.setMoviesByRolesList(brandoFilmography);
+        godfatherII.setPeopleByRolesSet(godfatherIICast);
 
         movieRepository.save(godfatherII);
         movieRepository.save(godfather);
+
+        Set<EntityByRoles> frankFilmography = new LinkedHashSet<>();
+        setPeopleFilmography(Role.DIRECTOR, frankFilmography, godfather, godfatherII);
+        setPeopleFilmography(Role.WRITER, frankFilmography, godfather, godfatherII);
+        frank.setMoviesByRolesSet(frankFilmography);
+
+        Set<EntityByRoles> puzoFilmography = new LinkedHashSet<>();
+        setPeopleFilmography(Role.WRITER, puzoFilmography, godfather, godfatherII);
+        puzo.setMoviesByRolesSet(puzoFilmography);
+
+        Set<EntityByRoles> pacinoFilmography = new LinkedHashSet<>();
+        setPeopleFilmography(Role.ACTOR, pacinoFilmography, godfather, godfatherII);
+        pacino.setMoviesByRolesSet(pacinoFilmography);
+
+        Set<EntityByRoles> brandoFilmography = new LinkedHashSet<>();
+        setPeopleFilmography(Role.ACTOR, brandoFilmography, godfather);
+        brando.setMoviesByRolesSet(brandoFilmography);
+
+
         personRepository.save(frank);
         personRepository.save(puzo);
         personRepository.save(brando);
         personRepository.save(pacino);
-
+/*
         System.out.println(godfather);
         System.out.println(godfatherII);
 
@@ -161,24 +160,42 @@ public class DataLoader implements CommandLineRunner {
         System.out.println(brando);
         System.out.println(puzo);
         System.out.println(pacino);
-
+*/
     }
 
-    public void setPeopleJobs(Role role, List<EntityByRoles> cast, Person... people) {
-        EntityByRoles<Person> movieJob = new EntityByRoles<>();
+    public void setPeopleJobs(Role role, Set<EntityByRoles> cast, Person... people) {
+        EntityByRoles movieJob = new EntityByRoles();
         movieJob.setRole(role);
-        List<Person> movieJobList = new ArrayList<>();
-        movieJobList.addAll(Arrays.asList(people));
-        movieJob.setList(movieJobList);
+
+        Set<String> movieJobSet = new LinkedHashSet<>();
+        Set<Long> peopleIdList = new LinkedHashSet<>();
+
+        Person person;
+        for (int i = 0; i < people.length; i++) {
+            person = people[i];
+            movieJobSet.add(person.getName());
+            peopleIdList.add(person.getId());
+        }
+        movieJob.setNames(movieJobSet);
+        movieJob.setIds(peopleIdList);
         cast.add(movieJob);
     }
 
-    public void setPeopleFilmography(Role role, List<EntityByRoles> personFilmography, Movie... movies) {
-        EntityByRoles<Movie> personMovieByRole = new EntityByRoles<>();
+    public void setPeopleFilmography(Role role, Set<EntityByRoles> personFilmography, Movie... movies) {
+        EntityByRoles personMovieByRole = new EntityByRoles();
         personMovieByRole.setRole(role);
-        List<Movie> movieList = new ArrayList<>();
-        movieList.addAll(Arrays.asList(movies));
-        personMovieByRole.setList(movieList);
+
+        Set<String> movieList = new LinkedHashSet<>();
+        Set<Long> movieIdList = new LinkedHashSet<>();
+
+        Movie movie;
+        for (int i = 0; i < movies.length; i++) {
+            movie = movies[i];
+            movieList.add(movie.getName());
+            movieIdList.add(movie.getId());
+        }
+        personMovieByRole.setNames(movieList);
+        personMovieByRole.setIds(movieIdList);
         personFilmography.add(personMovieByRole);
     }
 }

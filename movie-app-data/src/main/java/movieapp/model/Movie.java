@@ -5,7 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -30,22 +32,21 @@ public class Movie extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Category> categoryList = new ArrayList<>();
 
-    @Column(name = "peopleByRolesList", length = 2000000)
+    @Column(name = "peopleByRolesSet", length = 20000)
     @ElementCollection(targetClass = EntityByRoles.class)
-    private List<EntityByRoles> peopleByRolesList = new ArrayList<>();
+    private Set<EntityByRoles> peopleByRolesSet = new LinkedHashSet<>();
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        for (EntityByRoles entityByRoles : peopleByRolesList) {
+        for (EntityByRoles entityByRoles : peopleByRolesSet) {
             builder.append(entityByRoles.getRole().toString() + ":");
-            for (Object o : entityByRoles.getList()) {
-                if (o instanceof BaseEntity) builder.append(((BaseEntity) o).getName().toString() + " ");
-                else throw new IllegalArgumentException("Not good");
-            }
+            for (String name : entityByRoles.getNames())
+                builder.append(name + " ");
             builder.append(System.getProperty("line.separator"));
         }
+
         return getName() + '\n' +
                 "movieDescription='" + movieDescription + '\n' +
                 ", movieRuntime=" + movieRuntime + '\n' +

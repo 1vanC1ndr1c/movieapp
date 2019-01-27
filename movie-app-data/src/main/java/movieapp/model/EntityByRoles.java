@@ -2,24 +2,15 @@ package movieapp.model;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-public class EntityByRoles<T extends BaseEntity> extends BaseEntity {
+@Data
+public class EntityByRoles extends BaseEntity {
 
     private Role role;
-    private List<T> list = new ArrayList<>();
+    private Set<String> names = new LinkedHashSet<>();
+    private Set<Long> ids = new LinkedHashSet<>();
 
-    @Override
-    public String toString() {
-        return "role=" + role +
-                ", list=" + list.toString() +
-                '}';
-    }
 }

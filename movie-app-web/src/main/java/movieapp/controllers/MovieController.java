@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @RequestMapping("/movie")//this one combines with the one below
@@ -21,7 +22,7 @@ public class MovieController {
     private final MovieRepository movieRepository;
     private final PersonRepository personRepository;
 
-    public MovieController(MovieRepository movieRepository, PersonRepository personRepository, PersonRepository personRepository1) {
+    public MovieController(MovieRepository movieRepository, PersonRepository personRepository1) {
         this.movieRepository = movieRepository;
         this.personRepository = personRepository1;
     }
@@ -38,12 +39,13 @@ public class MovieController {
     //good habit to do, only expecting get methods
     //get mapping ~ request mapping
     public String showById(@PathVariable String id, Model model) {
-        Movie movie = (Movie) movieRepository.findById(Long.valueOf(id)).orElse(null);
-        List<Person> directors = getPeopleByRoles(movie, Role.DIRECTOR);
-        List<Person> writers = getPeopleByRoles(movie, Role.WRITER);
-        List<Person> actors = getPeopleByRoles(movie, Role.ACTOR);
+        Movie movie = movieRepository.findById(Long.valueOf(id)).orElse(null);
 
-        model.addAttribute("movie",movieRepository.findById(new Long(id)));
+        List<Person> directors = getPeopleByIds(getPeopleIds(movie, Role.DIRECTOR));
+        List<Person> writers = getPeopleByIds(getPeopleIds(movie, Role.WRITER));
+        List<Person> actors = getPeopleByIds(getPeopleIds(movie, Role.ACTOR));
+
+        model.addAttribute("movie", movieRepository.findById(new Long(id)));
         model.addAttribute("directors", directors);
         model.addAttribute("writers", writers);
         model.addAttribute("actors", actors);
@@ -51,15 +53,20 @@ public class MovieController {
         return "movie/show";
     }
 
-    private List<Person> getPeopleByRoles(Movie movie, Role role) {
-        List<Person> people = new ArrayList<>();
-
-        for (EntityByRoles entityByRoles : movie.getPeopleByRolesList()) {
+    private Set<Long> getPeopleIds(Movie movie, Role role) {
+        Set<Long> peopleId = new LinkedHashSet<>();
+        for (EntityByRoles entityByRoles : movie.getPeopleByRolesSet())
             if (entityByRoles.getRole().equals(role))
-                for (Object o : entityByRoles.getList()) {
-                    if (o instanceof BaseEntity) people.add((Person) o);
-                    else throw new IllegalArgumentException("Not good");
-                }
+                peopleId.addAll(entityByRoles.getIds());
+        return peopleId;
+    }
+
+    private List<Person> getPeopleByIds(Set<Long> peopleIds) {
+        List<Person> people = new ArrayList<>();
+        Person person;
+        for (Long id : peopleIds) {
+            person = personRepository.findById(id).orElse(null);
+            people.add(person);
         }
         return people;
     }

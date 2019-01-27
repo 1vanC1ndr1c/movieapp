@@ -40,13 +40,13 @@
             <span th:unless="${directors.size() ==  1}">Directors:</span></b>
         <div th:each="director : *{directors}">
             <a href="#" th:href="@{'/person/' + ${director.getId()} + '/show'}" th:text="${director.getName()}">Default Director</a>
-            </span> <br/></div>
-        
+        </span> <br/></div>
+
         <b><span th:if="${writers.size() ==  1}">Writer:</span>
             <span th:unless="${writers.size() ==  1}">Writers:</span></b>
         <div th:each="writer : *{writers}">
             <a href="#" th:href="@{'/person/' + ${writer.getId()} + '/show'}" th:text="${writer.getName()}">Default Writer</a>
-            </span> <br/></div>
+         </span> <br/></div>
 
 
         <b><div><span th:if="${actors.size() ==  1}">Actor:</span>

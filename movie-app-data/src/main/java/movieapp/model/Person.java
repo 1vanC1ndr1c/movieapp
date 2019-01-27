@@ -29,23 +29,18 @@ public class Person extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name = "moviesByRolesList", length = 2000000)
+    @Column(name = "moviesByRolesSet", length = 20000)
     @ElementCollection(targetClass = EntityByRoles.class)
-    private List<EntityByRoles> moviesByRolesList = new ArrayList<>();
+    private Set<EntityByRoles> moviesByRolesSet = new LinkedHashSet<>();
 
     @Override
     public String toString() {
         List<String> filmography = new ArrayList<>();
 
-        for (EntityByRoles entityByRoles : moviesByRolesList) {
-            for (Object o : entityByRoles.getList()) {
-                if (o instanceof BaseEntity) {
-                    if (!filmography.contains(((BaseEntity) o).getName())) filmography.add(((BaseEntity) o).getName());
-                } else {
-                    throw new IllegalArgumentException("Not good");
-                }
-            }
-        }
+        for (EntityByRoles entityByRoles : moviesByRolesSet)
+            for (String name : entityByRoles.getNames())
+                if (!filmography.contains(name)) filmography.add(name);
+
         return getName() + '\n' +
                 "bio='" + bio + '\n' +
                 ", birthPlace='" + birthPlace + '\n' +

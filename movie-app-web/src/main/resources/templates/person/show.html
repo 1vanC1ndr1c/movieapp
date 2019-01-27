@@ -32,6 +32,8 @@
     <b>Birth Place:</b>
     <p th:text="${person.get().birthPlace}">Default Person BirthPlace</p>
     <b>Filmography:</b>
-    <span th:each="movie : *{filmography}"><td th:text="${movie.getName()+' '}">Default Movie</td></span> <br/></div>
+    <span th:each="movie : *{filmography}">
+         <a href="#" th:href="@{'/movie/' + ${movie.getId()} + '/show'}" th:text="${movie.getName()}">Default Actor</a>
+    </span> <br/></div>
 </div>
 </body>
