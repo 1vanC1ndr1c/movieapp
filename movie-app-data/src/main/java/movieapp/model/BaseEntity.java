@@ -22,8 +22,4 @@ public class BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    public boolean isNew() {
-        return this.id == null;
-    }
 }

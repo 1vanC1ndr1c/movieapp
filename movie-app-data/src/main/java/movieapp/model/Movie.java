@@ -1,6 +1,7 @@
 package movieapp.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -32,7 +33,8 @@ public class Movie extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Category> categoryList = new ArrayList<>();
 
-    @Column(name = "peopleByRolesSet", length = 20000)
+
+    @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection(targetClass = EntityByRoles.class)
     private Set<EntityByRoles> peopleByRolesSet = new LinkedHashSet<>();
 

@@ -29,7 +29,7 @@ public class Person extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name = "moviesByRolesSet", length = 20000)
+    @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection(targetClass = EntityByRoles.class)
     private Set<EntityByRoles> moviesByRolesSet = new LinkedHashSet<>();
 
