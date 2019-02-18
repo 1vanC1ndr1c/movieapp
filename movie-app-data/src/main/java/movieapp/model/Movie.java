@@ -1,7 +1,6 @@
 package movieapp.model;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -32,9 +31,9 @@ public class Movie extends BaseEntity {
 
     @Lob
     @Column(name = "category")
-    @ElementCollection(targetClass = Category.class)
+    @ElementCollection(targetClass = MovieCategory.class)
     @Enumerated(value = EnumType.STRING)
-    private List<Category> categoryList = new ArrayList<>();
+    private List<MovieCategory> movieCategoryList = new ArrayList<>();
 
     @Lob
     @OneToMany(cascade = CascadeType.ALL)
@@ -46,7 +45,7 @@ public class Movie extends BaseEntity {
         StringBuilder builder = new StringBuilder();
 
         for (EntityByRoles entityByRoles : peopleByRolesSet) {
-            builder.append(entityByRoles.getRole().toString() + ":");
+            builder.append(entityByRoles.getPersonRole().toString() + ":");
             for (String name : entityByRoles.getNames())
                 builder.append(name + " ");
             builder.append(System.getProperty("line.separator"));
@@ -56,7 +55,7 @@ public class Movie extends BaseEntity {
                 "movieDescription='" + movieDescription + '\n' +
                 ", movieRuntime=" + movieRuntime + '\n' +
                 ", releaseDate=" + releaseDate + '\n' +
-                ", categoryList=" + categoryList + '\n' +
+                ", movieCategoryList=" + movieCategoryList + '\n' +
                 ", Cast and Crew=" + '\n' + builder.toString();
     }
 }

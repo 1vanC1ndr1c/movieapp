@@ -24,7 +24,7 @@
     <b>Name:</b>
     <p th:text="${(person.get().getName())}">Default Movie Name</p>
     <b>Roles:</b>
-    <p><tr th:each="role : ${person.get().roles}"><label th:text="${role.toString()}+' '"> Default Person roles</label></tr></p>
+    <p><tr th:each="personRole : ${person.get().personRoles}"><label th:text="${personRole.toString()}+' '"> Default Person personRoles</label></tr></p>
     <b>Biography:</b>
     <p th:text="${person.get().bio}">Default Person Bio</p>
     <b>Birth Date:</b>

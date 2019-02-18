@@ -41,9 +41,9 @@ public class MovieController {
     public String showById(@PathVariable String id, Model model) {
         Movie movie = movieRepository.findById(Long.valueOf(id)).orElse(null);
 
-        List<Person> directors = getPeopleByIds(getPeopleIds(movie, Role.DIRECTOR));
-        List<Person> writers = getPeopleByIds(getPeopleIds(movie, Role.WRITER));
-        List<Person> actors = getPeopleByIds(getPeopleIds(movie, Role.ACTOR));
+        List<Person> directors = getPeopleByIds(getPeopleIds(movie, PersonRole.DIRECTOR));
+        List<Person> writers = getPeopleByIds(getPeopleIds(movie, PersonRole.WRITER));
+        List<Person> actors = getPeopleByIds(getPeopleIds(movie, PersonRole.ACTOR));
 
         model.addAttribute("movie", movieRepository.findById(new Long(id)));
         model.addAttribute("directors", directors);
@@ -53,10 +53,10 @@ public class MovieController {
         return "movie/show";
     }
 
-    private Set<Long> getPeopleIds(Movie movie, Role role) {
+    private Set<Long> getPeopleIds(Movie movie, PersonRole personRole) {
         Set<Long> peopleId = new LinkedHashSet<>();
         for (EntityByRoles entityByRoles : movie.getPeopleByRolesSet())
-            if (entityByRoles.getRole().equals(role))
+            if (entityByRoles.getPersonRole().equals(personRole))
                 peopleId.addAll(entityByRoles.getIds());
         return peopleId;
     }

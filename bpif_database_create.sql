@@ -1,4 +1,4 @@
-create table entity_by_roles (id bigint not null, name varchar(255), role varchar(255), primary key (id)) engine=MyISAM;
+create table entity_by_roles (id bigint not null, name varchar(255), personRole varchar(255), primary key (id)) engine=MyISAM;
 create table entity_by_roles_ids (entity_by_roles_id bigint not null, ids longblob) engine=MyISAM;
 create table entity_by_roles_names (entity_by_roles_id bigint not null, name longtext) engine=MyISAM;
 create table hibernate_sequence (next_val bigint) engine=MyISAM;
@@ -10,7 +10,7 @@ create table movie_category_list (movie_id bigint not null, category longblob) e
 create table movie_people_by_roles_set (movie_id bigint not null, people_by_roles_set_id bigint not null, primary key (movie_id, people_by_roles_set_id)) engine=MyISAM;
 create table person (id bigint not null, name varchar(255), bio longtext, birth_date longblob, birth_place varchar(255), primary key (id)) engine=MyISAM;
 create table person_movies_by_roles_set (person_id bigint not null, movies_by_roles_set_id bigint not null, primary key (person_id, movies_by_roles_set_id)) engine=MyISAM;
-create table person_roles (person_id bigint not null, roles longblob) engine=MyISAM;
+create table person_roles (person_id bigint not null, personRoles longblob) engine=MyISAM;
 alter table movie_people_by_roles_set add constraint UK_dw0pc11032sb15g2781ucidr unique (people_by_roles_set_id);
 alter table person_movies_by_roles_set add constraint UK_4kmo4dh4deo1677kcc48of4xy unique (movies_by_roles_set_id);
 alter table entity_by_roles_ids add constraint FKg3p0tuunhiqpd2w14qsds0e72 foreign key (entity_by_roles_id) references entity_by_roles (id);

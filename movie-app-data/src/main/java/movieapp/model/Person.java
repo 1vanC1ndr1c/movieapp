@@ -27,10 +27,10 @@ public class Person extends BaseEntity {
     private CustomDate birthDate = new CustomDate();
 
     @Lob
-    @Column(name = "roles")
-    @ElementCollection(targetClass = Role.class)
+    @Column(name = "personRoles")
+    @ElementCollection(targetClass = PersonRole.class)
     @Enumerated(value = EnumType.STRING)
-    private List<Role> roles = new ArrayList<>();
+    private List<PersonRole> personRoles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection(targetClass = EntityByRoles.class)
@@ -48,7 +48,7 @@ public class Person extends BaseEntity {
                 "bio='" + bio + '\n' +
                 ", birthPlace='" + birthPlace + '\n' +
                 ", birthDate=" + birthDate.toString() + '\n' +
-                ", roles=" + roles.toString() + '\n' +
+                ", personRoles=" + personRoles.toString() + '\n' +
                 ", filmography=" + filmography.toString();
     }
 }

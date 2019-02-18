@@ -26,7 +26,7 @@
     <div style="background-color:grey;" align="left">
         <h1 th:text="${(movie.get().name.toString())+'('+movie.get().getReleaseDate().getYear().toString()+')'}">Default Movie Name</h1>
         <h5 th:text="${movie.get().getMovieRuntime().toString()
-                        +' | '+movie.get().getCategoryList()
+                        +' | '+movie.get().getMovieCategoryList()
                         +' | '+movie.get().getReleaseDate().toString()}">Default Data</h5>
     </div>
     <div>

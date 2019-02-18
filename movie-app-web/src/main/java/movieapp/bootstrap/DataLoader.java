@@ -39,11 +39,11 @@ public class DataLoader implements CommandLineRunner {
                 " had been an actress.");
         frank.setBirthPlace(" Detroit, Michigan, USA");
         frank.setBirthDate(new CustomDate(1939, 04, 07));
-        List<Role> roles = new ArrayList<>();
-        roles.add(Role.DIRECTOR);
-        roles.add(Role.PRODUCER);
-        roles.add(Role.WRITER);
-        frank.setRoles(roles);
+        List<PersonRole> personRoles = new ArrayList<>();
+        personRoles.add(PersonRole.DIRECTOR);
+        personRoles.add(PersonRole.PRODUCER);
+        personRoles.add(PersonRole.WRITER);
+        frank.setPersonRoles(personRoles);
 
 
         Person puzo = new Person();
@@ -55,9 +55,9 @@ public class DataLoader implements CommandLineRunner {
                 " acclaimed novels, \"The Dark Arena\" and \"The Fortunate Pilgrim.");
         puzo.setBirthPlace("Manhattan, New York City, New York, USA");
         puzo.setBirthDate(new CustomDate(1920, 10, 15));
-        List<Role> roles2 = new ArrayList<>();
-        roles2.add(Role.WRITER);
-        puzo.setRoles(roles2);
+        List<PersonRole> roles2 = new ArrayList<>();
+        roles2.add(PersonRole.WRITER);
+        puzo.setPersonRoles(roles2);
 
 
         Person brando = new Person();
@@ -69,11 +69,11 @@ public class DataLoader implements CommandLineRunner {
                 " a decision for which he was severely criticized.");
         brando.setBirthPlace("Omaha, Nebraska, USA");
         brando.setBirthDate(new CustomDate(1947, 04, 03));
-        List<Role> roles3 = new ArrayList<>();
-        roles3.add(Role.DIRECTOR);
-        roles3.add(Role.ACTOR);
-        roles3.add(Role.SOUNDTRACK);
-        brando.setRoles(roles3);
+        List<PersonRole> roles3 = new ArrayList<>();
+        roles3.add(PersonRole.DIRECTOR);
+        roles3.add(PersonRole.ACTOR);
+        roles3.add(PersonRole.SOUNDTRACK);
+        brando.setPersonRoles(roles3);
 
 
         Person pacino = new Person();
@@ -86,11 +86,11 @@ public class DataLoader implements CommandLineRunner {
                 " New York City, to an Italian-American family.");
         pacino.setBirthPlace("Manhattan, New York City, New York, USA");
         pacino.setBirthDate(new CustomDate(1940, 4, 25));
-        List<Role> roles4 = new ArrayList<>();
-        roles4.add(Role.PRODUCER);
-        roles4.add(Role.ACTOR);
-        roles4.add(Role.SOUNDTRACK);
-        pacino.setRoles(roles4);
+        List<PersonRole> roles4 = new ArrayList<>();
+        roles4.add(PersonRole.PRODUCER);
+        roles4.add(PersonRole.ACTOR);
+        roles4.add(PersonRole.SOUNDTRACK);
+        pacino.setPersonRoles(roles4);
 
         personRepository.save(puzo);
         personRepository.save(frank);
@@ -105,13 +105,13 @@ public class DataLoader implements CommandLineRunner {
                 " of his clandestine empire to his reluctant son.");
         godfather.setMovieRuntime(new MovieRuntime(2, 55));
         godfather.setReleaseDate(new CustomDate(1972, 3, 24));
-        List<Category> categories = new ArrayList<>();
-        categories.add(Category.Crime);
-        godfather.setCategoryList(categories);
+        List<MovieCategory> categories = new ArrayList<>();
+        categories.add(MovieCategory.Crime);
+        godfather.setMovieCategoryList(categories);
         Set<EntityByRoles> godfatherCast = new LinkedHashSet<>();
-        setPeopleJobs(Role.DIRECTOR, godfatherCast, frank);
-        setPeopleJobs(Role.ACTOR, godfatherCast, brando, pacino);
-        setPeopleJobs(Role.WRITER, godfatherCast, puzo);
+        setPeopleJobs(PersonRole.DIRECTOR, godfatherCast, frank);
+        setPeopleJobs(PersonRole.ACTOR, godfatherCast, brando, pacino);
+        setPeopleJobs(PersonRole.WRITER, godfatherCast, puzo);
         godfather.setPeopleByRolesSet(godfatherCast);
 
 
@@ -122,11 +122,11 @@ public class DataLoader implements CommandLineRunner {
                 " while his son, Michael, expands and tightens his grip on the family crime syndicate");
         godfatherII.setMovieRuntime(new MovieRuntime(3, 22));
         godfatherII.setReleaseDate(new CustomDate(1974, 12, 20));
-        godfatherII.setCategoryList(categories);
+        godfatherII.setMovieCategoryList(categories);
         Set<EntityByRoles> godfatherIICast = new LinkedHashSet<>();
-        setPeopleJobs(Role.DIRECTOR, godfatherIICast, frank);
-        setPeopleJobs(Role.ACTOR, godfatherIICast, pacino);
-        setPeopleJobs(Role.WRITER, godfatherIICast, puzo);
+        setPeopleJobs(PersonRole.DIRECTOR, godfatherIICast, frank);
+        setPeopleJobs(PersonRole.ACTOR, godfatherIICast, pacino);
+        setPeopleJobs(PersonRole.WRITER, godfatherIICast, puzo);
         godfatherII.setPeopleByRolesSet(godfatherIICast);
 
 
@@ -134,20 +134,20 @@ public class DataLoader implements CommandLineRunner {
         movieRepository.save(godfatherII);
 
         Set<EntityByRoles> frankFilmography = new LinkedHashSet<>();
-        setPeopleFilmography(Role.DIRECTOR, frankFilmography, godfather, godfatherII);
-        setPeopleFilmography(Role.WRITER, frankFilmography, godfather, godfatherII);
+        setPeopleFilmography(PersonRole.DIRECTOR, frankFilmography, godfather, godfatherII);
+        setPeopleFilmography(PersonRole.WRITER, frankFilmography, godfather, godfatherII);
         frank.setMoviesByRolesSet(frankFilmography);
 
         Set<EntityByRoles> puzoFilmography = new LinkedHashSet<>();
-        setPeopleFilmography(Role.WRITER, puzoFilmography, godfather, godfatherII);
+        setPeopleFilmography(PersonRole.WRITER, puzoFilmography, godfather, godfatherII);
         puzo.setMoviesByRolesSet(puzoFilmography);
 
         Set<EntityByRoles> pacinoFilmography = new LinkedHashSet<>();
-        setPeopleFilmography(Role.ACTOR, pacinoFilmography, godfather, godfatherII);
+        setPeopleFilmography(PersonRole.ACTOR, pacinoFilmography, godfather, godfatherII);
         pacino.setMoviesByRolesSet(pacinoFilmography);
 
         Set<EntityByRoles> brandoFilmography = new LinkedHashSet<>();
-        setPeopleFilmography(Role.ACTOR, brandoFilmography, godfather);
+        setPeopleFilmography(PersonRole.ACTOR, brandoFilmography, godfather);
         brando.setMoviesByRolesSet(brandoFilmography);
 
 
@@ -166,9 +166,21 @@ public class DataLoader implements CommandLineRunner {
 */
     }
 
-    public void setPeopleJobs(Role role, Set<EntityByRoles> cast, Person... people) {
+
+    // Two methods below can be done as one general method using generics,
+    // but the resulting function would be too abstract to easily comprehend
+    // thus making the usage of data loader far harder.
+
+
+    /*
+    The method takes a personRole on the film and set of people performing that personRole
+    and saves them in set called cast.
+    Cast is a set of personRoles on a film and people that perform those personRoles.
+    EntityByRoles has (in this case) a person's Id and a person's name
+    */
+    public void setPeopleJobs(PersonRole personRole, Set<EntityByRoles> cast, Person... people) {
         EntityByRoles movieJob = new EntityByRoles();
-        movieJob.setRole(role);
+        movieJob.setPersonRole(personRole);
 
         Set<String> movieJobSet = new LinkedHashSet<>();
         Set<Long> peopleIdList = new LinkedHashSet<>();
@@ -184,9 +196,16 @@ public class DataLoader implements CommandLineRunner {
         cast.add(movieJob);
     }
 
-    public void setPeopleFilmography(Role role, Set<EntityByRoles> personFilmography, Movie... movies) {
+
+    /*
+    The method takes a personRole of a person and a list of films which that person did as that personRole
+    and saves them in set called filmography.
+    Filmography is a set of films that a person performed a specific personRole on.
+    EntityByRoles has (in this case) a movie's Id and a movie's name
+    */
+    public void setPeopleFilmography(PersonRole personRole, Set<EntityByRoles> personFilmography, Movie... movies) {
         EntityByRoles personMovieByRole = new EntityByRoles();
-        personMovieByRole.setRole(role);
+        personMovieByRole.setPersonRole(personRole);
 
         Set<String> movieList = new LinkedHashSet<>();
         Set<Long> movieIdList = new LinkedHashSet<>();
