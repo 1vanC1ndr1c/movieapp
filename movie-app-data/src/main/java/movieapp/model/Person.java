@@ -15,16 +15,19 @@ import java.util.*;
 @Table(name = "person")
 public class Person extends BaseEntity {
 
-    @Column(name = "bio", length = 20000)
+    @Lob
+    @Column(name = "bio")
     private String bio;
 
     @Column(name = "birthPlace")
     private String birthPlace;
 
-    @Column(name = "birthDate", length = 20000)
+    @Lob
+    @Column(name = "birthDate")
     private CustomDate birthDate = new CustomDate();
 
-    @Column(name = "roles", length = 20000)
+    @Lob
+    @Column(name = "roles")
     @ElementCollection(targetClass = Role.class)
     @Enumerated(value = EnumType.STRING)
     private List<Role> roles = new ArrayList<>();

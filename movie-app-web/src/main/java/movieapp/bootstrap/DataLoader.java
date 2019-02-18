@@ -10,7 +10,6 @@ import java.util.*;
 
 
 @Component
-//@Profile("dataloader")
 public class DataLoader implements CommandLineRunner {
 
     private final MovieRepository movieRepository;
@@ -32,7 +31,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        //make some persons
         Person frank = new Person();
         frank.setName("Francis Ford Copolla");
         frank.setBio("Francis Ford Coppola was releaseDate in 1939 in Detroit, Michigan, " +
@@ -48,6 +46,7 @@ public class DataLoader implements CommandLineRunner {
         roles.add(Role.WRITER);
         frank.setRoles(roles);
 
+
         Person puzo = new Person();
         puzo.setName("Mario Puzo");
         puzo.setBio("Mario Puzo was born October 15, 1920, in \"Hell's Kitchen\" on Manhattan's (NY) West Side and, " +
@@ -60,6 +59,7 @@ public class DataLoader implements CommandLineRunner {
         List<Role> roles2 = new ArrayList<>();
         roles2.add(Role.WRITER);
         puzo.setRoles(roles2);
+
 
         Person brando = new Person();
         brando.setName("Marlon Brando");
@@ -75,6 +75,7 @@ public class DataLoader implements CommandLineRunner {
         roles3.add(Role.ACTOR);
         roles3.add(Role.SOUNDTRACK);
         brando.setRoles(roles3);
+
 
         Person pacino = new Person();
         pacino.setName("Al Pacino");
@@ -97,6 +98,7 @@ public class DataLoader implements CommandLineRunner {
         personRepository.save(brando);
         personRepository.save(pacino);
 
+
         //1st movie
         Movie godfather = new Movie();
         godfather.setName("The Godfather");
@@ -113,6 +115,7 @@ public class DataLoader implements CommandLineRunner {
         setPeopleJobs(Role.WRITER, godfatherCast, puzo);
         godfather.setPeopleByRolesSet(godfatherCast);
 
+
         //2nd movie
         Movie godfatherII = new Movie();
         godfatherII.setName("The Godfather: Part II");
@@ -127,8 +130,9 @@ public class DataLoader implements CommandLineRunner {
         setPeopleJobs(Role.WRITER, godfatherIICast, puzo);
         godfatherII.setPeopleByRolesSet(godfatherIICast);
 
-        movieRepository.save(godfatherII);
+
         movieRepository.save(godfather);
+        movieRepository.save(godfatherII);
 
         Set<EntityByRoles> frankFilmography = new LinkedHashSet<>();
         setPeopleFilmography(Role.DIRECTOR, frankFilmography, godfather, godfatherII);

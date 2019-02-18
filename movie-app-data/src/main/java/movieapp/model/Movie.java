@@ -22,13 +22,16 @@ public class Movie extends BaseEntity {
     @Column(name = "movieDescription")
     private String movieDescription;
 
-    @Column(name = "movieRuntime", length = 20000)
+    @Lob
+    @Column(name = "movieRuntime")
     private MovieRuntime movieRuntime = new MovieRuntime();
 
-    @Column(name = "releaseDate", length = 2046)
+    @Lob
+    @Column(name = "releaseDate")
     private CustomDate releaseDate = new CustomDate();
 
-    @Column(name = "category", length = 20000)
+    @Lob
+    @Column(name = "category")
     @ElementCollection(targetClass = Category.class)
     @Enumerated(value = EnumType.STRING)
     private List<Category> categoryList = new ArrayList<>();
