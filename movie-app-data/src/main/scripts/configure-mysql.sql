@@ -26,3 +26,4 @@ GRANT SELECT ON bpif_prod.* to 'bpif_prod_user'@'%';
 GRANT INSERT ON bpif_prod.* to 'bpif_prod_user'@'%';
 GRANT DELETE ON bpif_prod.* to 'bpif_prod_user'@'%';
 GRANT UPDATE ON bpif_prod.* to 'bpif_prod_user'@'%';
+GRANT ALL ON bpif_dev.* to 'bpif_dev_user'@'localhost';

@@ -36,7 +36,7 @@ public class Movie extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private List<Category> categoryList = new ArrayList<>();
 
-
+    @Lob
     @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection(targetClass = EntityByRoles.class)
     private Set<EntityByRoles> peopleByRolesSet = new LinkedHashSet<>();
